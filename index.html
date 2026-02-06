@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jardín de Acciones | Dashboard Consciente</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --tierra: #8B7355;
+            --madera: #C4A884;
+            --hoja: #7A9B76;
+            --bordo: #8B4049;
+            --arena: #F5F1E8;
+            --piedra: #E8E4DB;
+            --carbon: #3A3A3A;
+            --niebla: #F9F7F4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--niebla) 0%, var(--arena) 100%);
+            color: var(--carbon);
+            line-height: 1.7;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Crimson Text', serif;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 40px 20px 60px;
+            background: white;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        }
+
+        header h1 {
+            font-size: clamp(32px, 5vw, 56px);
+            color: var(--bordo);
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        header p {
+            font-size: 18px;
+            color: var(--tierra);
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Filtros */
+        .filtros {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .filtro-btn {
+            background: white;
+            border: 2px solid var(--piedra);
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-family: 'Crimson Text', serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--tierra);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filtro-btn:hover {
+            border-color: var(--bordo);
+            color: var(--bordo);
+            transform: translateY(-2px);
+        }
+
+        .filtro-btn.active {
+            background: var(--bordo);
+            color: white;
+            border-color: var(--bordo);
+        }
+
+        /* Grid de Marcas */
+        .marcas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .marca-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.06);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+        }
+
+        .marca-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .marca-card.habilidades {
+            border-color: var(--hoja);
+        }
+
+        .marca-card.eureka {
+            border-color: var(--madera);
+        }
+
+        .marca-card.laura {
+            border-color: var(--bordo);
+        }
+
+        .marca-header {
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--piedra);
+        }
+
+        .marca-nombre {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: var(--carbon);
+        }
+
+        .marca-descripcion {
+            font-size: 14px;
+            color: var(--tierra);
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        /* Secciones (Fuego, Aire, Tierra) */
+        .seccion {
+            margin-bottom: 24px;
+        }
+
+        .seccion-titulo {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--tierra);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .seccion-titulo .icono {
+            font-size: 20px;
+        }
+
+        .tareas-lista {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .tarea-item {
+            background: var(--niebla);
+            padding: 14px 16px;
+            border-radius: 10px;
+            border-left: 4px solid transparent;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .tarea-item:hover {
+            background: var(--piedra);
+            transform: translateX(4px);
+        }
+
+        .fuego .tarea-item {
+            border-left-color: #D9534F;
+        }
+
+        .aire .tarea-item {
+            border-left-color: #5BC0DE;
+        }
+
+        .tierra .tarea-item {
+            border-left-color: var(--hoja);
+        }
+
+        .tarea-vacia {
+            color: var(--tierra);
+            font-style: italic;
+            opacity: 0.6;
+            font-size: 14px;
+            padding: 10px 0;
+        }
+
+        /* Vista Resumen General */
+        .resumen-general {
+            display: none;
+        }
+
+        .resumen-general.active {
+            display: block;
+        }
+
+        .resumen-seccion {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .resumen-titulo {
+            font-size: 32px;
+            margin-bottom: 24px;
+            color: var(--bordo);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .resumen-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .resumen-marca {
+            background: var(--niebla);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid var(--hoja);
+        }
+
+        .resumen-marca h4 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: var(--carbon);
+        }
+
+        .resumen-marca ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .resumen-marca li {
+            padding: 6px 0;
+            font-size: 14px;
+            color: var(--tierra);
+        }
+
+        .resumen-marca li:before {
+            content: "• ";
+            color: var(--bordo);
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--tierra);
+            font-size: 14px;
+            font-weight: 300;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .marcas-grid {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 36px;
+            }
+
+            .marca-card {
+                padding: 24px;
+            }
+
+            .resumen-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .marca-card {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .marca-card:nth-child(1) { animation-delay: 0.1s; }
+        .marca-card:nth-child(2) { animation-delay: 0.2s; }
+        .marca-card:nth-child(3) { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>🌿 Jardín de Acciones</h1>
+            <p>Un espacio sereno para cultivar nuestros proyectos con presencia y calma</p>
+        </header>
+
+        <!-- Filtros -->
+        <div class="filtros">
+            <button class="filtro-btn active" onclick="mostrarVista('todas')">Vista General</button>
+            <button class="filtro-btn" onclick="mostrarVista('habilidades')">Habilidades para el Cambio</button>
+            <button class="filtro-btn" onclick="mostrarVista('eureka')">Caja Eureka</button>
+            <button class="filtro-btn" onclick="mostrarVista('laura')">Laura Flynn</button>
+        </div>
+
+        <!-- Vista por Marcas -->
+        <div class="marcas-grid" id="vistaIndividual">
+            <!-- Las marcas se generarán dinámicamente desde data.js -->
+        </div>
+
+        <!-- Vista Resumen General -->
+        <div class="resumen-general active" id="vistaGeneral">
+            <!-- El resumen se generará dinámicamente -->
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>Hecho con calma y presencia · 2025</p>
+        </footer>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
